@@ -214,7 +214,7 @@ PowerViewAccessory.prototype = {
         var cp = this.blindService.getCharacteristic(Characteristic.CurrentHorizontalTiltAngle).value;
         var tp = value;
 
-        var command = "curl -X PUT -H \"Content-Type: application/json\" -d \"{\\\"shade\\\":{\"id\":" +
+        var command = "curl -X PUT -H \"Content-Type: application/json\" -d \"{\\\"shade\\\":{\\\"id\\\":" +
                         this.shadeid + ",\\\"positions\\\":{\\\"posKind1\\\":3,\\\"position1\\\":" +
                         percentToPos(value) + "}}}\" \"http://" +
                         this.ip_address + "/api/shades/" +
@@ -329,20 +329,21 @@ PowerViewAccessory.prototype = {
     },
 
     setTargetPosition: function(value, callback, ignore, ignore2, countopt) {
-        debugLog(this.log, "\x1b[32m%s\x1b[0m","[setTargetPosition] Started.");
-        debugLog(this.log, "\x1b[32m%s\x1b[0m","[setTargetPosition] value: " + value);
-        debugLog(this.log, "\x1b[32m%s\x1b[0m","[setTargetPosition] countopt: " + countopt);
+      debugLog(this.log, "\x1b[32m%s\x1b[0m","[setTargetPosition] to " + value + " with countopt: " + countopt);
 
         var count = countopt || 0;
 
         var cp = this.blindService.getCharacteristic(Characteristic.CurrentPosition).value;
         var tp = value;
 
-        var command = "curl -X PUT -H \"Content-Type: application/json\" -d \"{\\\"shade\\\":{\"id\":" +
-                        this.shadeid + ",\\\"positions\\\":{\\\"posKind1\\\":1,\\\"position1\\\":" +
-                        percentToPos(value) + "}}}\" \"http://" +
-                        this.ip_address + "/api/shades/" +
-                        this.shadeid + "\"";
+      var command = "curl -X PUT -H \"Content-Type: application/json\" -d \"{\\\"shade\\\":{\\\"id\\\":" +
+                      this.shadeid + ",\\\"positions\\\":{\\\"posKind1\\\":1,\\\"position1\\\":" +
+                      percentToPos(value) + "}}}\" \"http://" +
+                      this.ip_address + "/api/shades/" +
+                      this.shadeid + "\"";
+
+    debugLog(this.log, "\x1b[32m%s\x1b[0m","Sending: " + command);
+
 
         var that = this;
         that.buffer += 1;
